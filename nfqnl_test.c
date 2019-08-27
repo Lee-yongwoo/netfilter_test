@@ -75,8 +75,7 @@ static u_int32_t print_pkt (struct nfq_data *tb)
 		struct libnet_tcp_hdr *tcp  = (struct libnet_tcp_hdr*)&data[ip->ip_hl*4];
 		if (ntohs(tcp->th_dport) == 80) {
 			uint8_t *http = (uint8_t*)(data + ip->ip_hl*4 + tcp->th_off*4);
-			printf("tcp\n");
-			if (!memcmp(http, "GET", 3) || !memcmp(http, "POST", 4)) {
+			if (!memcmp(http, "GET", 3) || !memcmp(http, "POST", 4) || !memcmp(http, "HEAD", 4)) {
 				int i=3;
 				while (1) {
 					if (i + 6 + ip->ip_hl*4 + tcp->th_off*4 >= ntohs(ip->ip_len))
