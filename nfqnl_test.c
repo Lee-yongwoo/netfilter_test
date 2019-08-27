@@ -77,7 +77,6 @@ static u_int32_t print_pkt (struct nfq_data *tb)
 			uint8_t *http = (uint8_t*)(data + ip->ip_hl*4 + tcp->th_off*4);
 			printf("tcp\n");
 			if (!memcmp(http, "GET", 3) || !memcmp(http, "POST", 4)) {
-				printf("http %d\n",ntohs(ip->ip_len));
 				int i=3;
 				while (1) {
 					if (i + 6 + ip->ip_hl*4 + tcp->th_off*4 >= ntohs(ip->ip_len))
@@ -85,6 +84,7 @@ static u_int32_t print_pkt (struct nfq_data *tb)
 					if (!memcmp(http+i, "Host: ", 6)) {
 						if (!memcmp(http+i+6, host_name, strlen(host_name)))
 							find = 1;
+						break;
 					}
 					i++;
 				}
