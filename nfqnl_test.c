@@ -108,8 +108,10 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
 	u_int32_t id = print_pkt(nfa);
 	printf("entering callback\n");
 
-	if (find)
+	if (find) {
+		find = 0;
 		return nfq_set_verdict(qh, id, NF_DROP, 0, NULL);
+	}
 
 	return nfq_set_verdict(qh, id, NF_ACCEPT, 0, NULL);
 }
